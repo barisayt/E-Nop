@@ -43,7 +43,7 @@ jobs:
         echo "type = drive" >> ~/.config/rclone/rclone.conf
         echo "scope = drive.file" >> ~/.config/rclone/rclone.conf
         echo "service_account_file = ~/.config/rclone/baris-github-reports.json" >> ~/.config/rclone/rclone.conf
-        echo "root_folder_id = 1c5ZlP0QQdDcMw4688ShAHhMS_KFYoFw2" >> ~/.config/rclone/rclone.conf
+#        echo "root_folder_id = 1c5ZlP0QQdDcMw4688ShAHhMS_KFYoFw2" >> ~/.config/rclone/rclone.conf
       shell: bash
     
     - name: Upload Playwright Report to Google Drive
