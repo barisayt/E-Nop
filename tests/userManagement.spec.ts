@@ -15,7 +15,7 @@ test.beforeEach(async ({ signInPage, userManagement }) => {
   await userManagement.confirmDeletion.click();
 }) */
 
-test('Add Member with Admin Role', async ({ page, userManagement, fakerUsername, fakerName, fakerPassword }) => {
+test('Add Member with Admin Role @smoke', async ({ page, userManagement, fakerUsername, fakerName, fakerPassword }) => {
   await userManagement.addingUserRole();
   //Required Employee name already in the system. Admin name is the best option. 
   await userManagement.addingEmployeeName('a');
