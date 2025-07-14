@@ -32,7 +32,7 @@ test('Add Member with Admin Role @smoke', async ({ page, userManagement, fakerUs
   await userManagement.setUserNameAndPassword(fakerUsername, fakerPassword, fakerPassword);
   await userManagement.buttonInText('Save').click();
   await expect(userManagement.successMessage).toBeVisible();
-}); 
+});
 
 /* test('Add Member with ESS Role', async ({ signInPage, page }) => {
 
