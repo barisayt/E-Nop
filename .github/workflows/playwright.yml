@@ -30,21 +30,10 @@ jobs:
     - name: Install rclone
       if: ${{ always() }}
       run: curl https://rclone.org/install.sh | sudo bash
-    - name: Setup rclone config and service account
+    - name: Deploy Playwright Report to GitHub Pages
       if: ${{ always() }}
-      run: |
-        mkdir -p ~/.config/rclone
-        echo '${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}' > ~/.config/rclone/github-actions-report.json
-        
-        echo "[googleDrive-Smoke-Test]" > ~/.config/rclone/rclone.conf
-        echo "type = drive" >> ~/.config/rclone/rclone.conf
-        echo "scope = drive.file" >> ~/.config/rclone/rclone.conf
-        echo "service_account_file = ~/.config/rclone/github-actions-report.json" >> ~/.config/rclone/rclone.conf
-        echo "root_folder_id = 1wuvbWGCpVltPy2LOD-fJ00CdYbwSFKgs" >> ~/.config/rclone/rclone.conf
-      shell: bash
-
-    - name: Upload Playwright Report to Google Drive
-      if: ${{ always() }}
-      run:  |
-        rclone copy playwright-report googleDrive-Smoke-Test: -P
-      shell: bash
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./playwright-report
+        publish_branch: gh-pages
