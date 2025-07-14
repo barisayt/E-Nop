@@ -38,7 +38,7 @@ jobs:
 
     - name: List Playwright report files
       run: ls -la playwright-report
-
+ 
     - name: Upload Playwright Report to Google Drive
       if: ${{ always() }}
       run: rclone copy playwright-report googleDrive-Smoke-Test:"GitHub Reports/playwright-report" --verbose
