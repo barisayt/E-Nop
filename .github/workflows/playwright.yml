@@ -4,6 +4,10 @@ on:
     branches: [  "**"  ]
   pull_request:
     branches: [  "**"  ]
+
+permissions:
+  contents: write  # THIS IS IMPORTANT for permission to push to gh-pages
+
 jobs:
   test:
     timeout-minutes: 60
