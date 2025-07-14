@@ -1,12 +1,14 @@
 name: Smoke Tests on PR
 on:
+  schedule:
+    - cron: '0 2 * * *' # Everyday at 2 AM Scheduled Run
   push:
     branches: [  "**"  ]
   pull_request:
     branches: [  "**"  ]
 
 permissions:
-  contents: write  # THIS IS IMPORTANT for permission to push to gh-pages
+  contents: write  # Permission to push to gh-pages
 
 jobs:
   test:
@@ -23,6 +25,10 @@ jobs:
       run: npx playwright install
     - name: Run Playwright tests
       run: npx playwright test --grep "@smoke"
+    - name: Run Cucumber tests
+      run: npx cucumber-js
+    - name: Generate Allure Report
+      run: npm run allure:generate
       continue-on-error: true
 
     - uses: actions/upload-artifact@v4
@@ -30,6 +36,12 @@ jobs:
       with:
         name: playwright-report
         path: playwright-report/
+    - name: Upload Allure report
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: allure-report
+        path: allure-report/
         retention-days: 30
     - name: Install rclone
       if: ${{ always() }}
