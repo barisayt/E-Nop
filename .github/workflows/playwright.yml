@@ -36,7 +36,6 @@ jobs:
         echo "${{ secrets.RCLONE_CONFIG_BASE64 }}" | base64 --decode > ~/.config/rclone/rclone.conf
       shell: bash
 
-
     - name: List Playwright report files
       run: ls -la playwright-report
 
