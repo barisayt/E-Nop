@@ -47,7 +47,7 @@ jobs:
       shell: bash
     
     - name: Upload Playwright Report to Google Drive
-      if: ${{ failure() }}
+      if: ${{ always() }}
       run:  |
         rclone copy playwright-report googleDrive-Test: -P
       shell: bash
