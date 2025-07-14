@@ -22,13 +22,13 @@ jobs:
       continue-on-error: true
 
     - uses: actions/upload-artifact@v4
-      if: ${{ failure() }}
+      if: ${{ always() }}
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
     - name: Install rclone
-      if: ${{ failure() }}
+      if: ${{ always() }}
       run: curl https://rclone.org/install.sh | sudo bash
     - name: Setup rclone config
       run: |
@@ -37,7 +37,7 @@ jobs:
       shell: bash
 
     - name: Upload Playwright Report to Google Drive
-      if: ${{ failure() }}
+      if: ${{ always() }}
       run:  |
         rclone copy playwright-report googleDrive-Smoke-Test: -P
       shell: bash
