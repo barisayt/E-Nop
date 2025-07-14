@@ -30,23 +30,18 @@ jobs:
     - name: Install rclone
       if: ${{ always() }}
       run: curl https://rclone.org/install.sh | sudo bash
-    - name: Setup rclone config and service account
+    - name: Setup rclone config
       if: ${{ always() }}
       run: |
         mkdir -p ~/.config/rclone
-        echo '${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}' > ~/.config/rclone/googledrive-service-account.json
-        
-        echo "[googleDrive-Smoke-Test]" > ~/.config/rclone/rclone.conf
-        echo "type = drive" >> ~/.config/rclone/rclone.conf
-        echo "scope = drive.file" >> ~/.config/rclone/rclone.conf
-        echo "service_account_file = ~/.config/rclone/googledrive-service-account.json" >> ~/.config/rclone/rclone.conf
-        echo "root_folder_id = 1T4nT1IRsvDBxMRKRyONzoayHu-pXCEdR" >> ~/.config/rclone/rclone.conf
+        echo "${{ secrets.RCLONE_CONFIG }}" > ~/.config/rclone/rclone.conf
       shell: bash
+
 
     - name: List Playwright report files
       run: ls -la playwright-report
 
     - name: Upload Playwright Report to Google Drive
       if: ${{ always() }}
-      run:  rclone copy playwright-report googleDrive-Test:PlaywrightReports/playwright-report --verbose
+      run: rclone copy playwright-report googleDrive-Smoke-Test:"GitHub Reports/playwright-report" --verbose
       shell: bash
