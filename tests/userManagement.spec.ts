@@ -7,7 +7,7 @@ test.beforeEach(async ({ signInPage, userManagement }) => {
   await signInPage.authorizedUserLogin();
   await userManagement.addButtonForUser();
 })
- 
+
 //Test has been closed due to UI refreshes so quickly and deletes all created users.
 /* test.afterEach(async ({ signInPage, userManagement, fakerUsername }) => {
   await userManagement.adminButton.click();
