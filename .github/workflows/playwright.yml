@@ -43,8 +43,10 @@ jobs:
         echo "root_folder_id = 1T4nT1IRsvDBxMRKRyONzoayHu-pXCEdR" >> ~/.config/rclone/rclone.conf
       shell: bash
 
+    - name: List Playwright report files
+      run: ls -la playwright-report
+
     - name: Upload Playwright Report to Google Drive
       if: ${{ always() }}
-      run:  |
-        rclone copy playwright-report googleDrive-Smoke-Test: -P
+      run:  rclone copy playwright-report googleDrive-Test:PlaywrightReports/playwright-report --verbose
       shell: bash
