@@ -21,7 +21,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install
     - name: Run Playwright tests
-      run: npx playwright test --grep "@smoke"
+      run: npx playwright test"
       continue-on-error: true
 
     - uses: actions/upload-artifact@v4
@@ -47,10 +47,7 @@ jobs:
       shell: bash
     
     - name: Upload Playwright Report to Google Drive
-      if: ${{ always() }}
+      if: ${{ failure() }}
       run:  |
-        echo "Uploading to Google Drive on DATE: $DATE"
-        rclone copy playwright-report googleDrive-Test:PlaywrightReports/playwright-report/$DATE --verbose
-      env:
-        DATE: ${{ env.DATE }}
+        rclone copy playwright-report googleDrive-Test: -P
       shell: bash
