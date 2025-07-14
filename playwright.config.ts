@@ -25,22 +25,25 @@ export default defineConfig({
   workers: undefined,
   timeout: 60000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }]],
+  reporter: [
+    ['html', { outputFolder: 'playwright-report', open: 'never' }], //Playwright HTML Report
+    ['allure-playwright'], //Allure report file
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
      baseURL: 'https://opensource-demo.orangehrmlive.com/',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-all-retries",
+    trace: "on-first-retry",
 
     headless: true,
 
     testIdAttribute: "data-tt-tour",
 
-    video: "off",
+    video: "retain-on-failure",
 
-    screenshot: "on",
+    screenshot: "only-on-failure",
   },
 
   /* Configure projects for major browsers */

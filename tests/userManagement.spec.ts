@@ -18,7 +18,7 @@ test.beforeEach(async ({ signInPage, userManagement }) => {
 test('Add Member with Admin Role', async ({ page, userManagement, fakerUsername, fakerName, fakerPassword }) => {
   await userManagement.addingUserRole();
   //Required Employee name already in the system. Admin name is the best option. 
-  await userManagement.addingEmployeeName('manda MiddleName LastName');
+  await userManagement.addingEmployeeName('a');
   //Wait for list of employees
   await userManagement.listOfEmployees.waitFor({ state: 'visible' });
   //Wait for first employee is visible
@@ -34,9 +34,9 @@ test('Add Member with Admin Role', async ({ page, userManagement, fakerUsername,
   await expect(userManagement.successMessage).toBeVisible();
 });
 
-test('Add Member with ESS Role', async ({ signInPage, page }) => {
+/* test('Add Member with ESS Role', async ({ signInPage, page }) => {
 
-});
+}); */
 
 /* test('Adding Member without Filling required fields @Negative', async ({ signInPage, page }) => {
 #eb0910 BorderColor

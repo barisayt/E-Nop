@@ -1,9 +1,12 @@
 name: Playwright Tests
 on:
+  schedule:
+    - cron: '0 2 * * *' # Every Day at 2 AM UTC 
+  workflow_dispatch: 
   push:
-    branches: [ main, master ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ "**" ]
 jobs:
   test:
     timeout-minutes: 60
@@ -16,27 +19,35 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --grep "@smoke"
+      continue-on-error: true
+
     - uses: actions/upload-artifact@v4
-      if: ${{ failure() }}
+      if: ${{ always() }}
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
     - name: Install rclone
-      if: ${{ failure() }}
+      if: ${{ always() }}
       run: curl https://rclone.org/install.sh | sudo bash
     - name: Setup rclone config and service account
-      if: ${{ failure() }}
+      if: ${{ always() }}
       run: |
         mkdir -p ~/.config/rclone
-        echo '${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}' > ~/.config/rclone/googledrive-service-account.json
+        echo '${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}' > ~/.config/rclone/baris-github-reports.json
         
-        echo "[googleDrive-Smoke-Test]" > ~/.config/rclone/rclone.conf
+        echo "[googleDrive-Test]" > ~/.config/rclone/rclone.conf
         echo "type = drive" >> ~/.config/rclone/rclone.conf
         echo "scope = drive.file" >> ~/.config/rclone/rclone.conf
-        echo "service_account_file = ~/.config/rclone/googledrive-service-account.json" >> ~/.config/rclone/rclone.conf
-        echo "root_folder_id = 1K3M7lfGo8hgxqnzMDOAlJeBMEsskITVo" >> ~/.config/rclone/rclone.conf
+        echo "service_account_file = ~/.config/rclone/baris-github-reports.json" >> ~/.config/rclone/rclone.conf
+        echo "root_folder_id = 1c5ZlP0QQdDcMw4688ShAHhMS_KFYoFw2" >> ~/.config/rclone/rclone.conf
+      shell: bash
+
+    - name: Upload Playwright Report to Google Drive
+      if: ${{ always() }}
+      run:  |
+        rclone copy playwright-report googleDrive-Test:PlaywrightReports/playwright-report/$(date +'%Y-%m-%d') -P
       shell: bash

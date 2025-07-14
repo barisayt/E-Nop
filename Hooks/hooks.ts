@@ -1,5 +1,5 @@
-import { BeforeAll, Before, After, setDefaultTimeout } from '@cucumber/cucumber';
-import { CustomWorld } from './world';
+import { BeforeAll, Before, After, setDefaultTimeout, ITestCaseHookParameter, Status } from '@cucumber/cucumber';
+import { CustomWorld } from '../Steps/world';
 import { saveGeneralAuthState } from '../auth-setup-hook';
 
 
@@ -14,5 +14,5 @@ Before(async function () {
 });
 
 After(async function () {
-  await (this as CustomWorld).close();
-})
+    await (this as CustomWorld).init();
+});
