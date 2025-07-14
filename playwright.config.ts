@@ -43,7 +43,7 @@ export default defineConfig({
 
     video: "retain-on-failure",
 
-    screenshot: "only-on-failure",
+    screenshot: "on",
   },
 
   /* Configure projects for major browsers */
