@@ -1,19 +1,13 @@
-name: Playwright Tests
+name: Smoke Tests on PR
 on:
-  schedule:
-    - cron: '0 2 * * *' # Every Day at 2 AM UTC 
-  workflow_dispatch: 
   push:
-    branches: [ "**" ]
+    branches: [  "**"  ]
   pull_request:
-    branches: [ "**" ]
+    branches: [  "**"  ]
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        worker: [1, 2, 3]
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -40,15 +34,15 @@ jobs:
       if: ${{ always() }}
       run: |
         mkdir -p ~/.config/rclone
-        echo '${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}' > ~/.config/rclone/tasktrain-reports-b49e8e0ce2d5.json
+        echo '${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}' > ~/.config/rclone/googledrive-service-account.json
         
         echo "[googleDrive-Smoke-Test]" > ~/.config/rclone/rclone.conf
         echo "type = drive" >> ~/.config/rclone/rclone.conf
         echo "scope = drive.file" >> ~/.config/rclone/rclone.conf
-        echo "service_account_file = ~/.config/rclone/tasktrain-reports-b49e8e0ce2d5.json" >> ~/.config/rclone/rclone.conf
+        echo "service_account_file = ~/.config/rclone/googledrive-service-account.json" >> ~/.config/rclone/rclone.conf
         echo "root_folder_id = 1c5ZlP0QQdDcMw4688ShAHhMS_KFYoFw2" >> ~/.config/rclone/rclone.conf
       shell: bash
-    
+
     - name: Upload Playwright Report to Google Drive
       if: ${{ always() }}
       run:  |
