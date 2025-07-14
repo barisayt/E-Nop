@@ -30,11 +30,10 @@ jobs:
     - name: Install rclone
       if: ${{ always() }}
       run: curl https://rclone.org/install.sh | sudo bash
-    - name: Setup rclone config
-      if: ${{ always() }}
+    - name: Setup rclone config from base64 secret
       run: |
         mkdir -p ~/.config/rclone
-        echo "${{ secrets.RCLONE_CONFIG }}" > ~/.config/rclone/rclone.conf
+        echo "${{ secrets.RCLONE_CONFIG_BASE64 }}" | base64 --decode > ~/.config/rclone/rclone.conf
       shell: bash
 
 
