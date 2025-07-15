@@ -29,7 +29,7 @@ pipeline {
                 sh 'npx playwright test --reporter=dot,junit'
             }
         }
-    }
+    } 
     post {
         always {
             archiveArtifacts artifacts: '**/playwright-report/**/*', allowEmptyArchive: true
