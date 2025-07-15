@@ -38,7 +38,7 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       if: steps.playwright-cache.outputs.cache-hit != 'true'
-      run: npx playwright install -deps
+      run: npx playwright install
 
     # Save Cache Playwright browsers
     - name: Save playwright browsers cache
