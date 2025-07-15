@@ -26,6 +26,8 @@ export default defineConfig({
   timeout: 60000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
+    ['dot'],
+    ['junit', {outputFile: 'test-results/results.xml'}],
     ['html', { outputFolder: 'playwright-report', open: 'never' }], //Playwright HTML Report
     ['allure-playwright'], //Allure report file
   ],

@@ -26,14 +26,14 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh 'npx playwright test'
+                sh 'npx playwright test --reporter=dot,junit'
             }
         }
     }
     post {
         always {
             archiveArtifacts artifacts: '**/playwright-report/**/*', allowEmptyArchive: true
-            junit 'test-results/**/*.xml' // Optional if you produce JUnit reports
+            junit 'test-results/**/*.xml' // Produce JUnit reports
         }
     }
 }
