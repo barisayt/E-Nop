@@ -33,7 +33,7 @@ export const test = base.extend<FakerData & {
     },
 
     fakerUsername: async ({ }, use) => {
-        await use(faker.internet.userName());
+        await use(faker.internet.username());
     },
 
     fakerName: async ({ }, use) => {
