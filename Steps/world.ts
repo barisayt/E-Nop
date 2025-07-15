@@ -17,7 +17,7 @@ export class CustomWorld extends World {
 
   // faker data getters
   get fakerUsername() {
-    return faker.internet.userName();
+    return faker.internet.username();
   }
 
   get fakerEmail() {
@@ -38,7 +38,7 @@ export class CustomWorld extends World {
 
   async init() {
     const storageStatePath = path.resolve(__dirname, '../general-auth.json')
-    this.browser = await chromium.launch({ headless: false });
+    this.browser = await chromium.launch({ headless: true });
     this.context = await this.browser.newContext({
       storageState: storageStatePath, // <-- use the saved auth file here
     });

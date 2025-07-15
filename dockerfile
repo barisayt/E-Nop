@@ -12,10 +12,8 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm ci
-# Ensures version of browsers are installed
-RUN npx playwright install --with-deps
 # Install Playwright browsers (chromium, firefox, webkit) and all dependencies
-RUN npx playwright install --with-deps
+RUN npx playwright install 
 
 # Copy all source files
 COPY . .
