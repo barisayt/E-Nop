@@ -14,5 +14,5 @@ Before(async function () {
 });
 
 After(async function () {
-    await (this as CustomWorld).init();
+    await (this as CustomWorld).close();
 });
