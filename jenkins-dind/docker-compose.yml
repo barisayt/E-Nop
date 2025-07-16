@@ -1,20 +1,15 @@
-version: '3.8'
-
 services:
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
-    privileged: true # Docker daemon kullanmak için gerekli
     user: root
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker # Host docker cli
     environment:
-      DOCKER_HOST: unix:///var/run/docker.sock
+      DOCKER_HOST: tcp://host.docker.internal:2375  # Windows için dış docker daemon bağlantısı
 
 volumes:
   jenkins_home:
