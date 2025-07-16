@@ -1,32 +1,15 @@
 pipeline {
-    agent {
-        docker {
-            image 'mcr.microsoft.com/playwright:v1.46.0-jammy'
-            args '-u root'
-        }
-    }
-    environment {
-        CI = 'true'
-    }
+    agent any
     stages {
-        stage('Checkout') {
+        stage('Run in Docker') {
             steps {
-                checkout scm
-            }
-        }
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm ci'
-            }
-        }
-        stage('Install Browsers') {
-            steps {
-                sh 'npx playwright install --with-deps'
-            }
-        }
-        stage('Run Tests') {
-            steps {
-                sh 'npx playwright test --reporter=dot,junit'
+                script {
+                    docker.image('mcr.microsoft.com/playwright:v1.46.0-jammy').inside('-u root') {
+                        sh 'npm ci'
+                        sh 'npx playwright install --with-deps'
+                        sh 'npx playwright test --reporter=dot,junit'
+                    }
+                }
             }
         }
     }
@@ -37,4 +20,3 @@ pipeline {
         }
     }
 }
- 
