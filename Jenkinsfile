@@ -1,35 +1,26 @@
 pipeline {
-    agent {
-        docker {
-            image 'my-playwright-with-docker'
-            args '-u root'
-        }
-    }
+    agent any
+
     environment {
         CI = 'true'
     }
+
     stages {
-        stage('Checkout') {
+        stage('Run in Docker') {
             steps {
-                checkout scm
-            }
-        }
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm ci'
-            }
-        }
-        stage('Install Browsers') {
-            steps {
-                sh 'npx playwright install --with-deps'
-            }
-        }
-        stage('Run Tests') {
-            steps {
-                sh 'npx playwright test --reporter=dot,junit'
+                script {
+                    docker.image('mcr.microsoft.com/playwright:v1.46.0-jammy').inside('-u root') {
+                        sh 'node -v'
+                        sh 'npm -v'
+                        sh 'npm ci'
+                        sh 'npx playwright install --with-deps'
+                        sh 'npx playwright test --reporter=dot,junit'
+                    }
+                }
             }
         }
     }
+
     post {
         always {
             archiveArtifacts artifacts: '**/playwright-report/**/*', allowEmptyArchive: true
