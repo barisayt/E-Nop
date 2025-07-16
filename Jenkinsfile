@@ -1,7 +1,17 @@
 pipeline {
     agent any
+
+    environment {
+        CI = 'true'
+    }
+
     stages {
-        stage('Run in Docker') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Run Playwright Tests (Docker)') {
             steps {
                 script {
                     docker.image('mcr.microsoft.com/playwright:v1.46.0-jammy').inside('-u root') {
@@ -13,10 +23,11 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             archiveArtifacts artifacts: '**/playwright-report/**/*', allowEmptyArchive: true
-            junit 'test-results/**/*.xml'
+            junit 'test-results/results.xml'
         }
     }
 }
