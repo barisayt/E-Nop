@@ -1,15 +1,17 @@
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    image: jenkins-with-docker-cli
     container_name: jenkins
     user: root
+    privileged: true  # docker daemon kullanımı için gerekli
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # docker socket'i container'a bağla
     environment:
-      DOCKER_HOST: tcp://host.docker.internal:2375  # Windows için dış docker daemon bağlantısı
+      DOCKER_HOST: unix:///var/run/docker.sock
 
 volumes:
   jenkins_home:

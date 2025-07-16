@@ -4,6 +4,11 @@ FROM mcr.microsoft.com/playwright:v1.46.0-jammy
 # Use official Node LTS base image
 #FROM node:lts
 
+USER root
+
+# Docker CLI kur
+RUN apt-get update && apt-get install -y docker.io
+
 # Set working directory inside container
 WORKDIR /app
 
