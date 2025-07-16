@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/playwright:v1.46.0-jammy
 USER root
 
 # Docker CLI kur
-RUN apt-get update && apt-get install -y docker.io
+RUN apt-get update && apt-get install -y docker.io && rm -rf /var/lib/apt/lists/*
 
 # Set working directory inside container
 WORKDIR /app
