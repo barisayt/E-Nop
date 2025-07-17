@@ -1,17 +1,35 @@
+version: '3.8'
+
 services:
+  docker:
+    image: docker:24-dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    volumes:
+      - dind-storage:/var/lib/docker
+    networks:
+      - jenkins
+
   jenkins:
-    image: jenkins-with-docker-cli
-    container_name: jenkins
+    build:
+      context: .
+      dockerfile: Dockerfile
     user: root
-    privileged: true  # docker daemon kullanımı için gerekli
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock  # docker socket'i container'a bağla
-    environment:
-      DOCKER_HOST: unix:///var/run/docker.sock
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - docker
+    networks:
+      - jenkins
 
 volumes:
-  jenkins_home:
+  jenkins-data:
+  dind-storage:
+
+networks:
+  jenkins:
