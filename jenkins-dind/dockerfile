@@ -4,7 +4,7 @@
 # Use official Node LTS base image
 #FROM node:lts
 
-FROM jenkins/jenkins:lts
+FROM mcr.microsoft.com/playwright:v1.46.0-jammy
 
 USER root
 
@@ -20,13 +20,9 @@ RUN wget https://github.com/allure-framework/allure2/releases/download/2.21.0/al
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH=$JAVA_HOME/bin:$PATH
 
+# Restore default non-root user
+USER pwuser
 
-# Docker CLI kur
-RUN apt-get update \
-    && apt-get install -y docker.io \
-    && rm -rf /var/lib/apt/lists/*
-
-USER jenkins
 
 # Set working directory inside container
 #WORKDIR /app
