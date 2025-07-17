@@ -14,11 +14,17 @@ pipeline {
             }
         }
     stage('Generate Allure Report') {
+            agent {
+                docker{
+                    image 'openjdk:17-jdk'
+                    args '-u root'
+                }
+            }
             when {
                 expression { fileExists('allure-results') }
             }
             steps {
-                sh '/usr/local/bin/allure generate --clean -o allure-report'
+                sh 'allure generate --clean -o allure-report'
             }
         }
     }
