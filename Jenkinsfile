@@ -13,6 +13,14 @@ pipeline {
                 sh 'npx playwright test'
             }
         }
+    stage('Generate Allure Report') {
+            when {
+                expression { fileExists('allure-results') }
+            }
+            steps {
+                sh "${ALLURE_CLI} generate --clean -o allure-report"
+            }
+        }
     }
     post {
         always {
