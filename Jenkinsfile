@@ -18,7 +18,7 @@ pipeline {
                 expression { fileExists('allure-results') }
             }
             steps {
-                sh "${ALLURE_CLI} generate --clean -o allure-report"
+                sh '/usr/local/bin/allure generate --clean -o allure-report'
             }
         }
     }
@@ -42,6 +42,7 @@ pipeline {
             allure([
                 includeProperties: false,
                 jdk: '',
+                commandline: 'allure', // Matches the name you set above
                 results: [[path: 'allure-results']]
             ])
         }
