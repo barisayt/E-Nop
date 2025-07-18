@@ -4,25 +4,31 @@
 # Use official Node LTS base image
 #FROM node:lts
 
-FROM mcr.microsoft.com/playwright:v1.46.0-jammy
+FROM jenkins/jenkins:lts
 
 USER root
 
-# Install Java
-RUN apt-get update && apt-get install -y openjdk-17-jdk wget unzip
+# install Java (if you need the plugin’s JDK too)
+RUN apt-get update \
+ && apt-get install -y openjdk-17-jdk wget unzip \
+ && rm -rf /var/lib/apt/lists/*
 
-# Install Allure CLI
-RUN wget https://github.com/allure-framework/allure2/releases/download/2.21.0/allure-2.21.0.zip -O /tmp/allure.zip && \
-    unzip /tmp/allure.zip -d /opt/ && \
-    ln -s /opt/allure-2.21.0/bin/allure /usr/local/bin/allure && \
-    rm /tmp/allure.zip
+# install Allure CLI 2.21.0
+RUN wget https://github.com/allure-framework/allure2/releases/download/2.21.0/allure-2.21.0.zip -O /tmp/allure.zip \
+ && unzip /tmp/allure.zip -d /opt/ \
+ && ln -s /opt/allure-2.21.0/bin/allure /usr/local/bin/allure \
+ && rm /tmp/allure.zip
+
+
+# Docker CLI kur
+RUN apt-get update \
+    && apt-get install -y docker.io \
+    && rm -rf /var/lib/apt/lists/*
+
+USER jenkins
 
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-ENV PATH=$JAVA_HOME/bin:$PATH
-
-# Restore default non-root user
-USER pwuser
-
+ENV PATH="$JAVA_HOME/bin:$PATH"
 
 # Set working directory inside container
 #WORKDIR /app
