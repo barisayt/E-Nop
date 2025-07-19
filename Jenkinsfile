@@ -59,8 +59,8 @@ pipeline {
         stage('Upload Reports to AWS S3') {
             agent { label 'master' }
             environment {
-                AWS_ACCESS_KEY_ID = credentials('aws-credentials')
-                AWS_SECRET_ACCESS_KEY = credentials('aws-credentials')
+                AWS_ACCESS_KEY_ID = credentials('AWS-credentials')
+                AWS_SECRET_ACCESS_KEY = credentials('AWS-credentials')
                 AWS_DEFAULT_REGION = 'us-east-1'  // Adjustable if needed
             }
             steps {
