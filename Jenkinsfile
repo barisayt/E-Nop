@@ -1,12 +1,6 @@
 pipeline {
     agent none
 
-    environment {
-        AWS_ACCESS_KEY_ID = credentials('AWS-credentials')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS-credentials')
-        AWS_DEFAULT_REGION = 'us-east-1'  // change if needed
-    }
-
     stages {
         stage('Run Playwright Tests') {
             agent {
@@ -68,6 +62,17 @@ pipeline {
                     aws s3 cp allure-report s3://playwright-allure-reports-536/allure-report/ --recursive
                     aws s3 cp playwright-report s3://playwright-allure-reports-536/playwright-report/ --recursive
                 '''
+            }
+        }
+        stage('Upload Reports to Azure Blob') {
+            agent { label 'master' }
+            environment {
+                AZURE_STORAGE_NAME = credentials('Azure_Storage_Name')
+                AZURE_ACCESS_KEY = credentials('Azure_Access_Key')
+            }
+            steps {
+                sh "az storage blob upload-batch --destination allure-report --destination-path allure-report --source allure-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
+                sh "az storage blob upload-batch --destination playwright-report --destination-path playwright-report --source playwright-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
             }
         }
     }
