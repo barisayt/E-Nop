@@ -19,11 +19,18 @@ RUN wget https://github.com/allure-framework/allure2/releases/download/2.21.0/al
  && ln -s /opt/allure-2.21.0/bin/allure /usr/local/bin/allure \
  && rm /tmp/allure.zip
 
-
 # Docker CLI kur
 RUN apt-get update \
     && apt-get install -y docker.io \
     && rm -rf /var/lib/apt/lists/*
+
+# Install AWS CLI
+RUN apt-get update && \
+    apt-get install -y awscli && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Azure CLI
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 USER jenkins
 
