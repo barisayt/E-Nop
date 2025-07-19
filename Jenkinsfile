@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Define TIMESTAMP globally, UTC time to keep folder unique per build
-        TIMESTAMP = new Date().format("yyyyMMdd-HHmmss", TimeZone.getTimeZone('UTC'))
+        TIMESTAMP = new Date().format("yyyy-MM-dd-HHmmss", TimeZone.getTimeZone('UTC'))
     }
 
     stages {
