@@ -1,6 +1,11 @@
 pipeline {
     agent none
 
+    environment {
+        // Define TIMESTAMP globally, UTC time to keep folder unique per build
+        TIMESTAMP = new Date().format("yyyyMMdd-HHmmss", TimeZone.getTimeZone('UTC'))
+    }
+
     stages {
         stage('Run Playwright Tests') {
             agent {
@@ -59,8 +64,8 @@ pipeline {
             }
             steps {
                 sh '''
-                    aws s3 cp allure-report s3://playwright-allure-reports-536/allure-report/ --recursive
-                    aws s3 cp playwright-report s3://playwright-allure-reports-536/playwright-report/ --recursive
+                    aws s3 cp allure-report s3://playwright-allure-reports-536/allure-report-${TIMESTAMP}/ --recursive
+                    aws s3 cp playwright-report s3://playwright-allure-reports-536/playwright-report-${TIMESTAMP}/ --recursive
                 '''
             }
         }
@@ -71,8 +76,8 @@ pipeline {
                 AZURE_ACCESS_KEY = credentials('Azure_Access_Key')
             }
             steps {
-                sh "az storage blob upload-batch --destination allure-report --destination-path allure-report --source allure-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
-                sh "az storage blob upload-batch --destination playwright-report --destination-path playwright-report --source playwright-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
+                sh "az storage blob upload-batch --destination allure-report --destination-path allure-report-${TIMESTAMP} --source allure-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
+                sh "az storage blob upload-batch --destination playwright-report --destination-path playwright-report-${TIMESTAMP} --source playwright-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
             }
         }
     }
