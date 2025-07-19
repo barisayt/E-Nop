@@ -67,7 +67,7 @@ pipeline {
         stage('Upload Reports to Azure Blob') {
             agent { label 'master' }
             environment {
-                AZURE_STORAGE_NAME = credentials('Azure_Storage_Name')
+                AZURE_STORAGE_NAME = credentials('Azure_Account_Name')
                 AZURE_ACCESS_KEY = credentials('Azure_Access_Key')
             }
             steps {
