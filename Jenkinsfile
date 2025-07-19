@@ -76,8 +76,8 @@ pipeline {
                 AZURE_ACCESS_KEY = credentials('Azure_Access_Key')
             }
             steps {
-                sh "az storage blob upload-batch --destination allure-report --destination-path allure-report-${TIMESTAMP} --source allure-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
-                sh "az storage blob upload-batch --destination playwright-report --destination-path playwright-report-${TIMESTAMP} --source playwright-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
+                sh "az storage blob upload-batch --destination jenkins-reports --destination-path allure-report-${TIMESTAMP} --source allure-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
+                sh "az storage blob upload-batch --destination jenkins-reports --destination-path playwright-report-${TIMESTAMP} --source playwright-report --account-name $AZURE_STORAGE_NAME --account-key $AZURE_ACCESS_KEY --overwrite"
             }
         }
     }
