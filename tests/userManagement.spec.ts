@@ -1,5 +1,7 @@
+import { userInfo } from "os";
 import { test, expect } from "../fixtures/orangeHRM-fixture";
 import { faker } from "@faker-js/faker";
+import { UserManagement } from "../pages/user_management";
 
 test.use({ storageState: './general-auth.json' });
 
@@ -16,7 +18,7 @@ test.beforeEach(async ({ signInPage, userManagement }) => {
 }) */
 
 test('Add Member with Admin Role @smoke', async ({ page, userManagement, fakerUsername, fakerName, fakerPassword }) => {
-  await userManagement.addingUserRole();
+  await userManagement.addingUserRoleAsAdmin();
   //Required Employee name already in the system. Admin name is the best option. 
   await userManagement.addingEmployeeName('a');
   //Wait for list of employees
@@ -34,8 +36,8 @@ test('Add Member with Admin Role @smoke', async ({ page, userManagement, fakerUs
   await expect(userManagement.successMessage).toBeVisible();
 });
 
-/* test('Add Member with ESS Role', async ({ signInPage, page }) => {
-
+/* test('Add Member with ESS Role', async ({ page, userManagement, fakerUsername, fakerPassword }) => {
+  await userManagement.addingUserRoleAsESS();
 }); */
 
 /* test('Adding Member without Filling required fields @Negative', async ({ signInPage, page }) => {

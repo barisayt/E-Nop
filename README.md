@@ -13,7 +13,7 @@
 - [Running Tests](#running-tests)  
 - [Test Design](#test-design)  
 - [CI/CD Integration](#cicd-integration)  
-- [Reporting](#reporting)  
+- [Reporting & Cloud Storage Integration](#reporting)
 - [Authentication Handling](#authentication-handling)  
 - [Future Enhancements](#future-enhancements)  
 - [Contact](#contact)  
@@ -35,14 +35,14 @@ It combines Playwright, Cucumber (BDD), and Faker to provide robust functional U
 - **CI/CD:** GitHub Actions, Jenkins (DinD with Docker)  
 - **Reporting:** Allure Reports, Playwright HTML Reporter  
 - **Containerization:** Docker, Docker Compose  
-- **Cloud:** (Planned) AWS S3 for report storage, Azure DevOps pipelines  
+- **Cloud:** AWS S3 for report storage, Azure Blob for report storage  
 - **Performance Testing:** (Planned) k6 and Lighthouse integration  
 - **Others:** TypeScript, Node.js, dotenv  
 
 ---
 
 ## Project Structure
-
+```plaintext
 E-Nop/
 ├── .github/workflows/        # GitHub Actions workflows
 │   └── playwright.yml        # Playwright test CI pipeline
@@ -77,6 +77,7 @@ E-Nop/
 ├── package.json              # Node dependencies and scripts
 ├── playwright.config.ts      # Playwright test runner config
 └── tsconfig.json             # TypeScript compiler config
+```
 
 ## Setup & Installation
 ## Clone the repository
@@ -87,21 +88,29 @@ cd E-Nop
 npm install
 
 ## Setup environment variables
-Create a .env file (not included in repo for security) with:
+Included .env file with UI basic account with:
 
 TEST_EMAIL=your_test_email
 TEST_PASSWORD=your_test_password
 
-## Generate Authentication State
-Run the auth setup test to save logged-in state:
+These credentials are used by the test suite for signing into the OrangeHRM demo application.
+
+## Generate Authentication State (Optional)
+The framework automatically uses a saved authentication state (general-auth.json) to skip login where possible.
+If you need to refresh the login state manually (e.g., credentials changed, session expired), you can run:
+# Option 1: Run the dedicated auth setup script
 npm run auth-setup
+# Option 2: Run the Playwright tests (auth-setup runs automatically as a dependency)
+npx playwright test
+# Option 3: Run the Cucumber tests (hooks trigger auth setup)
+npx cucumber-js
 
 ## Running Tests
 ## Run all Playwright tests (Chromium)
 npm run tests:chrome
 
 ## Run tests with Cucumber
-npm run cucumber
+npx cucumber-js
 
 ## Run tests with retries (configured in CI)
 Automatically retries twice on CI environment.
@@ -122,13 +131,17 @@ Automatically retries twice on CI environment.
 - **Playwright HTML report:** Stored in playwright-report/ folder.
 - **Allure report:** Generated from test results, uploaded as artifact in CI, and viewable locally.
 - **Reports uploaded to GitHub Pages** for easier access.
+- **Reports uploaded to AWS S3** for cloud access and archiving.
+- **Reports uploaded to Azure Blob Storage** for cloud access and archiving.
+
 
 ## Authentication Handling
 **auth-setup.ts** and **auth-setup-hook.ts** automate login and save storage state for reuse across tests, improving test speed and stability.
 
 ## Future Enhancements
 - Additional positive and negative test scenarios, including edge cases.
-- Dynamic calendar/due date selection and file/image upload automation.
 - Integration of performance testing tools: k6 and Lighthouse.
 - Extending CI/CD pipelines to Azure DevOps.
-- Storing test artifacts and reports on AWS S3.
+- Expand API testing using REST-assured or similar tools.
+
+**Thank you for visiting this project!**

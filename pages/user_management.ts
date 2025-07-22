@@ -50,7 +50,7 @@ export class UserManagement {
         await this.page.waitForLoadState('domcontentloaded');
     }
 
-    async addingUserRole() {
+    async addingUserRoleAsAdmin() {
         //Click on User Role option
         await this.userRoleMenu.click();
         //Select user role option as Admin

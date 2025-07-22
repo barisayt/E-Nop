@@ -11,7 +11,7 @@ Given('I am on the user management add user page', async function () {
 });
 
 When('I select the admin user role', async function () {
-    await this.userManagement.addingUserRole();
+    await this.userManagement.addingUserRoleAsAdmin();
 });
 
 When('I enter the employee name "a"', async function () {
