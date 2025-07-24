@@ -1,12 +1,14 @@
 import { Locator, expect, Page } from "@playwright/test";
+import { BasePage } from "./base-page";
 
 
-export class UserManagement {
+export class UserManagement extends BasePage {
     readonly page: Page;
-    readonly addButton: Locator;
+    //readonly addButton: Locator;
     readonly adminButton: Locator;
     readonly userRoleMenu: Locator;
     readonly userRoleAdminOption: Locator;
+    readonly userRoleESSOption: Locator;
     readonly employeeNameField: Locator;
     readonly listOfEmployees: Locator;
     readonly selectFirstEmployee: Locator;
@@ -15,18 +17,18 @@ export class UserManagement {
     readonly adminSectionUsername: Locator;
     readonly adminSectionPassword: Locator;
     readonly adminSectionConfirmPassword: Locator;
-    readonly buttonInText: (text: string) => Locator;
     readonly successMessage: Locator;
     readonly cleanCreatedUserRecords: (name: string) => Locator;
-    readonly confirmDeletion: Locator;
 
     //Constructor
     constructor(page: Page) {
+        super(page);
         this.page = page;
         this.adminButton = page.getByRole('link', { name: 'Admin' })
-        this.addButton = page.locator(`//button[normalize-space()='Add']`);
+        //this.addButton = page.locator(`//button[normalize-space()='Add']`);
         this.userRoleMenu = page.getByText('-- Select --').first()
         this.userRoleAdminOption = page.getByRole('option', { name: 'Admin' }).locator('span');
+        this.userRoleESSOption = page.getByRole('option', { name: 'ESS' }).locator('span');
         this.employeeNameField = page.locator(`//input[@placeholder='Type for hints...']`);
         this.listOfEmployees = page.locator('div[role="listbox"].oxd-autocomplete-dropdown');
         this.selectFirstEmployee = page.getByRole('option').first()
@@ -35,10 +37,9 @@ export class UserManagement {
         this.adminSectionUsername = page.getByRole('textbox').nth(2);
         this.adminSectionPassword = page.locator('input.oxd-input.oxd-input--active[type="password"]').nth(0);
         this.adminSectionConfirmPassword = page.getByRole('textbox').nth(4);
-        this.buttonInText = (text: string) => page.getByRole('button', { name: text });
         this.successMessage = page.getByText('Success', { exact: true })
         this.cleanCreatedUserRecords = (name: string) => page.locator(`//div[contains(@class, 'oxd-table-row') and .//div[contains(text(), ${name}')]`).locator('button i.oxd-icon.bi-trash').first();
-        this.confirmDeletion = page.locator(`//button[normalize-space()='Yes, Delete']`);
+        //confirmDeletion is in base-page.ts
     }
 
     async addButtonForUser() {
@@ -55,6 +56,13 @@ export class UserManagement {
         await this.userRoleMenu.click();
         //Select user role option as Admin
         await this.userRoleAdminOption.click();
+    }
+
+    async addingUserRoleAsESS() {
+        //Click on User Role option
+        await this.userRoleMenu.click();
+        //Select user role option as ESS
+        await this.userRoleESSOption.click();
     }
 
     async addingEmployeeName(name: string) {

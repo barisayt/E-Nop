@@ -58,10 +58,15 @@ E-Nop/
 ├── jenkins-dind/             # Jenkins + Docker-in-Docker setup files
 │   ├── docker-compose.yml
 │   └── Dockerfile
-├── pages/                    # Page Object Models
+├── pages/                           # Page Object Models
+│   ├── base-page.ts
+│   ├── pim-page.ts
+│   ├── recruitment-page.ts
 │   ├── sign-in-page.ts
 │   └── user_management.ts
 ├── tests/                    # Playwright test specs
+│   ├── pim-photo-upload.spec.ts
+│   ├── recruitment.spec.ts
 │   ├── sign-in-user.spec.ts
 │   └── userManagement.spec.ts
 ├── allure-results/           # Generated Allure report data

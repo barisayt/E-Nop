@@ -1,17 +1,17 @@
 import { Locator, expect, Page} from "@playwright/test";
+import { BasePage } from "./base-page";
 
-export class SignInPage{
+export class SignInPage extends BasePage {
     readonly page: Page;
     readonly mainPageUserName: Locator;
     readonly logInPasswordField: Locator;
-    readonly logInButton: Locator;
 
     //Constructor
     constructor(page: Page) {
+        super(page)
         this.page = page;
         this.mainPageUserName = page.locator(`//input[@placeholder='Username']`);
         this.logInPasswordField = page.locator(`//input[@placeholder='Password']`); 
-        this.logInButton = page.locator(`//button[normalize-space()='Login']`);
     }
 
     async visit() {
