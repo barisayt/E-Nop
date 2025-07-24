@@ -88,7 +88,7 @@ test.describe('Password Validation', () => {
   });
 
   test('Add Member with Admin Role - Password Max Length', async ({ page, userManagement, fakerUsername, fakerName }) => {
-    const maxPassword = 'a1' + 'b'.repeat(61); // 63 chars
+    const maxPassword = 'a1' + 'b'.repeat(62); // 64 chars
     await userManagement.addingUserRoleAsAdmin();
     await userManagement.addingEmployeeName('a');
     await userManagement.listOfEmployees.waitFor({ state: 'visible' });
@@ -103,7 +103,7 @@ test.describe('Password Validation', () => {
   });
 
   test('Add Member with Admin Role - Password Above Max Length', async ({ page, userManagement, fakerUsername, fakerName }) => {
-    const longPassword = 'a1' + 'b'.repeat(62); // 64 chars
+    const longPassword = 'a1' + 'b'.repeat(63); // 65 chars
     await userManagement.addingUserRoleAsAdmin();
     await userManagement.addingEmployeeName('a');
     await userManagement.listOfEmployees.waitFor({ state: 'visible' });
@@ -115,7 +115,7 @@ test.describe('Password Validation', () => {
     await userManagement.setUserNameAndPassword(fakerUsername, longPassword, longPassword);
     await userManagement.saveButton.click();
     // Expect an error message or validation (update selector as needed)
-    await expect(page.locator('text=Should not exceed 63 characters')).toBeVisible();
+    await expect(page.getByText('Should not exceed 64')).toBeVisible();
   });
 });
 
