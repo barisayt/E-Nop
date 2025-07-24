@@ -1,4 +1,4 @@
-name: Smoke Tests on PR
+name: Test Run on Regular Basis
 on:
   schedule:
     - cron: '0 2 * * *' # Everyday at 2 AM Scheduled Run
@@ -41,7 +41,7 @@ jobs:
     - name: Install Allure CLI
       run: npm install -g allure-commandline
     - name: Run Playwright tests
-      run: npx playwright test --grep "@smoke"
+      run: npx playwright test
       if: ${{ always() }}
     - name: Run Cucumber tests
       run: npx cucumber-js
